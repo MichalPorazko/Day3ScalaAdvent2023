@@ -7,7 +7,7 @@ object Task3 {
   def main(args: Array[String]): Unit = {
 
     val task3 = new Task3("", 0, "", 0, false, 9, 1)
-    //readingFromFile("input.txt" ,task3 )
+    readingFromFile("input.txt" ,task3 )
     fixedEngine(0, task3 )
     println(task3.sum)
   }
