@@ -6,8 +6,8 @@ object Task3 {
 
   def main(args: Array[String]): Unit = {
 
-    val task3 = new Task3("", 0, "", 0, false, 9, 1)
-    readingFromFile("input.txt" ,task3 )
+    val task3 = new Task3("", 0, "", 0, false, 0, 0)
+    readingFromFile("input" ,task3 )
     fixedEngine(0, task3 )
     println(task3.sum)
   }
@@ -37,16 +37,19 @@ object Task3 {
   @tailrec
   def fixedEngine(index: Int = 0, state: Task3): Int =
     if (index >= state.input.length)
+      if state.isNumberDetected then
+        state.checkPartNumber()
       state.sum
     else
-      val character = state.input(index)
-      if (state.input(index).isDigit && !state.isNumberDetected)
-        state.numberDetected(index)
-      else if (state.input(index).isDigit && state.isNumberDetected)
+      if (state.input(index).isDigit && state.isNumberDetected)
         state.number += state.input(index)
-      else !state.input(index).isDigit && state.isNumberDetected
+      else if (!state.input(index).isDigit && state.isNumberDetected)
         state.checkPartNumber()
+      else if (state.input(index).isDigit && !state.isNumberDetected)
+        state.numberDetected(index)
       fixedEngine(index + 1, state)
+
+
 
 
   /*def fixedEngine(index: Int = 0, state: Task3): Int =

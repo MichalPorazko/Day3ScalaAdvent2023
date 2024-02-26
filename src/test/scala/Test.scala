@@ -164,17 +164,21 @@ class Test extends munit.FunSuite{
 
     val task3 = new Task3("48............491.842....*...*...363.....961", sum = 0, number = "", firstDigitPointer = 0, isNumberDetected = false, rowLength = 11, rowCount = 4)
     val fixedEngine = Task3.fixedEngine(index = 0, task3)
-    assertEquals(fixedEngine, 37)
+    assertEquals(fixedEngine, 2657)
   }
 
-  /*test("testing the whole program including the readingFromFile function"){
+  test("testing the whole program including the readingFromFile function"){
     //for testing the program I made I example inputTest file, the sum from this test file is more or less
     // 10024 (I did the counting manually)
     val task3 = new Task3("", 0, "", 0, false, 0, 0)
-    Task3.readingFromFile("inputTest.txt", task3)
-    assert(task3.input.isEmpty, false)
+    Task3.readingFromFile("inputTest", task3)
 
-  }*/
+    assertEquals(task3.rowLength, 140)
+
+    val state = new Task3("", 0, "", 0, false, 0, 0)
+    Task3.readingFromFile("input", state)
+    assertEquals(state.rowLength, 140)
+  }
 
 
 
