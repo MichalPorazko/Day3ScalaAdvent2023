@@ -1,12 +1,12 @@
 import scala.annotation.tailrec
 import scala.io.Source
 
-object Task3 {
+object Part1 {
 
 
   def main(args: Array[String]): Unit = {
 
-    val task3 = new Task3("", 0, "", 0, false, 0, 0)
+    val task3 = new State("", 0, "", 0, false, 0, 0)
     readingFromFile("input" ,task3 )
     fixedEngine(0, task3 )
     println(task3.sum)
@@ -15,7 +15,7 @@ object Task3 {
 
 
   //this functions reads the engine schematic from the file and flattens it as an 1D grid
-  def readingFromFile(filePath: String, state: Task3): Unit =
+  def readingFromFile(filePath: String, state: State): Unit =
     val stringBuilder = new StringBuilder
     var rowCount = 0
 
@@ -35,7 +35,7 @@ object Task3 {
     state.rowCount = rowCount
 
   @tailrec
-  def fixedEngine(index: Int = 0, state: Task3): Int =
+  def fixedEngine(index: Int = 0, state: State): Int =
     if (index >= state.input.length)
       if state.isNumberDetected then
         state.checkPartNumber()
@@ -48,26 +48,6 @@ object Task3 {
       else if (state.input(index).isDigit && !state.isNumberDetected)
         state.numberDetected(index)
       fixedEngine(index + 1, state)
-
-
-
-
-  /*def fixedEngine(index: Int = 0, state: Task3): Int =
-    if (index >= state.input.length)
-      state.sum
-    else
-      val character = state.input(index)
-      if (!state.input(index).isDigit && !state.isNumberDetected)
-        fixedEngine(index + 1, state)
-      else if (state.input(index).isDigit && !state.isNumberDetected)
-        state.numberDetected(index)
-        fixedEngine(index + 1, state)
-      else if (state.input(index).isDigit && state.isNumberDetected)
-        state.number += state.input(index)
-        fixedEngine(index + 1, state)
-      else !state.input(index).isDigit && state.isNumberDetected
-        state.checkPartNumber()
-        fixedEngine(index + 1, state)*/
 
   def isPartNumber(schematic: String, firstDigitPointer: Int, digitLength: Int, rowLength: Int, rowCount: Int): Boolean =
     getCoordinatesAroundNumber(firstDigitPointer, digitLength, rowLength, rowCount).exists(isSymbol(schematic, rowLength))
@@ -94,7 +74,7 @@ object Task3 {
 
 }
 
-class Task3(
+class State(
              var input: String = "",
              var sum: Int = 0,
              var number: String = "",
@@ -104,7 +84,7 @@ class Task3(
              var rowCount: Int = 0
            ) {
   def checkPartNumber(): Unit =
-    if Task3.isPartNumber(input, firstDigitPointer, number.length, rowLength, rowCount) then
+    if Part1.isPartNumber(input, firstDigitPointer, number.length, rowLength, rowCount) then
       sum = sum + number.toInt
     number = ""
     firstDigitPointer = 0
