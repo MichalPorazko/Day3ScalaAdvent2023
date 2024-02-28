@@ -2,7 +2,7 @@
 import caseClases.{Number => CaseNumber}
 class TestPart2 extends munit.FunSuite {
 
-  test("testing the method isDigitAdjacent"){
+  test("testing the method adjacentDigit"){
     //checking if a digit is correctly detected
     /*  . * 3
         . * .
@@ -49,8 +49,8 @@ class TestPart2 extends munit.FunSuite {
             */
 
 
-    val number1 = CaseNumber("67", 1, 2)
-    val number2 = CaseNumber("67", 7, 8)
+    val number1 = CaseNumber( 1, 2)
+    val number2 = CaseNumber( 7, 8)
     val state = new State2(".67.*..67", 0, 4, 3, 3, List(number1, number2))
     val check = Part2.isDigitInNumber((0,1), state)
     assertEquals(check, true)
@@ -58,18 +58,27 @@ class TestPart2 extends munit.FunSuite {
     /*     . 8 4 2 . .
            . . . * . .
            6 3 3 * . .    */
-    val number3 = CaseNumber("842", 1, 3)
-    val number4 = CaseNumber("633", 12, 14)
+    val number3 = CaseNumber( 1, 3)
+    val number4 = CaseNumber( 12, 14)
     val state2 = new State2(".842.....*..633*..", 0, 9, 6, 3, List(number3, number4))
     assertEquals(Part2.isDigitInNumber((2,2), state2), true)
 
     /*     . 8 4 2 . .
                . . . * . .
                6 3 3 * . .    */
-    val someNUmber = CaseNumber("842", 1, 3)
+    val someNUmber = CaseNumber( 1, 3)
     val state3 = new State2(".842.....*..633*..", 0, 9, 6, 3, List(someNUmber))
     //chechikng if 633 is part of the list (isn't)
     assertEquals(Part2.isDigitInNumber((2, 2), state3), false)
+  }
+
+  test("testing the method checkTwoAdjacentDigits "){
+    /*     . . 4 2 5 .
+           . . . * . .
+               */
+    val number = CaseNumber(2, 4)
+    val state2 = new State2(".842.....*..", 0, 9, 6, 2, List(number))
+
   }
 
 

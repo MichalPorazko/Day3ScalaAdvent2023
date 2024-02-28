@@ -1,3 +1,3 @@
 package caseClases
 
-case class Number(string: String, firstDigitPointer: Int, lastDigitPointer: Int)
+case class Number(firstDigitPointer: Int, lastDigitPointer: Int)

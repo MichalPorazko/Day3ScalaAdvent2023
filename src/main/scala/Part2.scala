@@ -12,15 +12,34 @@ object Part2 {
         ???
       fixedEngine(index + 1, state)
 
+
   //this function will return the final number containing the analysed digit
   //we have to get this number because if the gear is right we need it for the sum
   def digitInNumber(digit: (Int, Int), state: State2): CaseNumber =
-    ???
-    
-    /*
-    (Seq((fdc._1, fdc._2 - 1), (fdc._1, fdc._2 + digitLength)) ++ (-1 to digitLength).flatMap( x =>
-      Seq((fdc._1 -1, fdc._2 + x), (fdc._1 + 1 , fdc._2 + x)))).filter(check).sorted
-     */
+    val digitPointer = getPointer(state.rowLength, digit)
+    checkTwoAdjacentDigits(digitPointer, state) match
+      case Seq() => CaseNumber(digitPointer , digitPointer)
+      case Seq(oneElement) =>
+        val seq = checkOneAdjacentDigits(digitPointer, oneElement, state)
+        CaseNumber(seq.min, seq.max)
+      case Seq(firstElement, secondElement) => CaseNumber(firstElement, secondElement)
+
+
+  def checkOneAdjacentDigits(digitPointer: Int, oneElement: Int, state: State2): Seq[Int] =
+    val adjustment = if (digitPointer > oneElement) -1 else 1
+    val seq = Seq(digitPointer, oneElement).sorted
+
+    @tailrec
+    def adjustAndCollect(currentPointer: Int, seq: Seq[Int]): Seq[Int] =
+      if (state.input.charAt(oneElement).isDigit)
+        adjustAndCollect(currentPointer + adjustment, seq :+ currentPointer)
+      else
+        seq
+
+    adjustAndCollect(oneElement + adjustment, seq)
+
+  def checkTwoAdjacentDigits(digitPointer: Int, state: State2): Seq[Int] =
+    Seq(digitPointer - 1, digitPointer + 1).filter(x => state.input.charAt(x).isDigit).sorted
 
 
 
@@ -51,6 +70,8 @@ object Part2 {
   def getPointer(rowLength: Int, coordinates: (Int, Int)): Int =
     rowLength * coordinates._1 + coordinates._2
 
+
+  //older version of isDigitInNumber, made to practice for comprehension
   def isDigitInNumberDifferentVersion(digit: (Int, Int), state2: State2): Boolean =
     val digitPointer = getPointer(state2.rowLength, digit)
     val checks = for {
