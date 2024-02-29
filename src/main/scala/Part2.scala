@@ -9,9 +9,18 @@ object Part2 {
       state.sum
     else
       if (state.input(index).equals("*"))
-        ???
+        state.symbolPointer = index
+
       fixedEngine(index + 1, state)
 
+
+  def analyseStarSymbol(pointer: Int, state: State2): Unit =
+    adjacentDigits(state) match
+      case Seq() => ()
+      case Seq(x) => ???
+
+    def symbolSurroundedByDigit(seq: Seq[(Int, Int)]): Unit =
+      seq.foreach( x => if isDigitInNumber(x, state)  )
 
   //this function will return the final number containing the analysed digit
   //we have to get this number because if the gear is right we need it for the sum
@@ -25,28 +34,28 @@ object Part2 {
       case Seq(firstElement, secondElement) => CaseNumber(firstElement, secondElement)
 
 
-  def checkOneAdjacentDigits(digitPointer: Int, oneElement: Int, state: State2): Seq[Int] =
-    val adjustment = if (digitPointer > oneElement) -1 else 1
-    val seq = Seq(digitPointer, oneElement).sorted
+  def checkOneAdjacentDigits(digitPointer: Int, adjacentDigitPointer: Int, state: State2): Seq[Int] =
+    val adjustment = if (digitPointer > adjacentDigitPointer) -1 else 1
+    val seq = Seq(digitPointer, adjacentDigitPointer).sorted
 
     @tailrec
     def adjustAndCollect(currentPointer: Int, seq: Seq[Int]): Seq[Int] =
-      if (state.input.charAt(oneElement).isDigit)
+      if (currentPointer >= 0 && currentPointer < state.rowLength && state.input.charAt(currentPointer).isDigit)
         adjustAndCollect(currentPointer + adjustment, seq :+ currentPointer)
       else
-        seq
+        seq.sorted
 
-    adjustAndCollect(oneElement + adjustment, seq)
+
+    adjustAndCollect(adjacentDigitPointer + adjustment, seq)
 
   def checkTwoAdjacentDigits(digitPointer: Int, state: State2): Seq[Int] =
-    Seq(digitPointer - 1, digitPointer + 1).filter(x => state.input.charAt(x).isDigit).sorted
-
-
+    Seq(digitPointer - 1, digitPointer + 1).
+      filter(x => x < state.input.length && x >= 0).filter(x => state.input.charAt(x).isDigit).sorted
 
   //this function will check if a coordinates of a digit are already in a number
   def isDigitInNumber(digit: (Int, Int), state2: State2): Boolean =
     val digitPointer = getPointer(state2.rowLength, digit)
-    state2.numbers.exists{number =>
+    state2.numbers.exists { number =>
       (number.firstDigitPointer to number.lastDigitPointer).contains(digitPointer)
     }
 
