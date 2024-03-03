@@ -41,6 +41,12 @@ class TestPart2 extends munit.FunSuite {
     assertEquals(Part2.adjacentDigits(state5), Seq.empty)
 
 
+    //  . . . 2 5 4 . .
+    //  . . . * . . . .
+    //  . 7 8 . . . . .
+    val state = new State2("...254.....*.....78.....", 0, 11, 8, 3, Seq.empty)
+
+
   }
 
   test("testing the method isDidigtInNumber"){
@@ -248,6 +254,23 @@ class TestPart2 extends munit.FunSuite {
     val number = CaseNumber(23, 23)
     val edgeState = new State2("...254.....*.....78.....", 0, 14, 8, 3, List(number))
     assertEquals(Part2.digitInNumber((2,7), edgeState), number)
+  }
+
+  test("testing the method analyseStarSymbol "){
+    //  . . . 2 5 4 . .
+    //  . . . * . . . .
+    //  . 7 8 . . . . .
+
+    val number1 = CaseNumber(3, 5)
+    val number2 = CaseNumber(17, 18)
+    val state = new State2("...254.....*.....78.....", 0, 11, 8, 3, List(number1, number2))
+    /*Problem jest tym że funkcja adjacentDigit nie działa poprawnie,
+    tam masz niedokończone przykład gdzie właśnie ona powinna wygrać pięć cyfr
+    a nie wiem dlaczego wykrywa tylko cztery, chyba nie wykrywa
+    ósemki i to trzeba sprawdzić i to jest główny
+    problem Na razie zacząłem to badać ale tego jeszcze nie skończyłem*/
+    Part2.analyseStarSymbol(state)
+    assertEquals(state.sum, 19812)
   }
 
 

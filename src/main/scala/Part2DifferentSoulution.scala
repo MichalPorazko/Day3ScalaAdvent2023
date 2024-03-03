@@ -1,0 +1,8 @@
+class Part2DifferentSoulution {
+
+  
+
+
+
+
+}

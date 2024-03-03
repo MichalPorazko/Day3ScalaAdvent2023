@@ -10,17 +10,24 @@ object Part2 {
     else
       if (state.input(index).equals("*"))
         state.symbolPointer = index
-
+        analyseStarSymbol(state )
       fixedEngine(index + 1, state)
+      
 
 
-  def analyseStarSymbol(pointer: Int, state: State2): Unit =
+  def analyseStarSymbol(state: State2): Unit =
     adjacentDigits(state) match
       case Seq() => ()
-      case Seq(x) => ???
+      case x => symbolSurroundedByDigit(x)
+    state.symbolPointer = 0
+    state.numbers = Seq.empty
 
     def symbolSurroundedByDigit(seq: Seq[(Int, Int)]): Unit =
-      seq.foreach( x => if isDigitInNumber(x, state)  )
+     val numbers = seq.collect{ case coordinate if ! isDigitInNumber(coordinate, state) => digitInNumber(coordinate, state)}.knownSize
+     if (numbers == 2)
+       state.computeTheSum()
+
+
 
   //this function will return the final number containing the analysed digit
   //we have to get this number because if the gear is right we need it for the sum
@@ -79,7 +86,7 @@ object Part2 {
   def getPointer(rowLength: Int, coordinates: (Int, Int)): Int =
     rowLength * coordinates._1 + coordinates._2
 
-
+  
   //older version of isDigitInNumber, made to practice for comprehension
   def isDigitInNumberDifferentVersion(digit: (Int, Int), state2: State2): Boolean =
     val digitPointer = getPointer(state2.rowLength, digit)
@@ -97,5 +104,13 @@ class State2(
              var symbolPointer: Int = 0,
              var rowLength: Int = 0,
              var rowCount: Int = 0,
-             var numbers: List[CaseNumber]
-           )
+             var numbers: Seq[CaseNumber]
+           ) {
+  def computeTheSum(): Int =
+    numbers.foldLeft(sum) { (a, b) =>
+        a + createNumber(b)
+    }
+
+  def createNumber(caseNumber: CaseNumber): Int =
+    (caseNumber.firstDigitPointer to caseNumber.lastDigitPointer).map(x => input.charAt(x)).mkString.toInt
+}

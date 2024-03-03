@@ -3,14 +3,7 @@ import scala.io.Source
 
 object Part1 {
 
-
-  def main(args: Array[String]): Unit = {
-
-    val task3 = new State("", 0, "", 0, false, 0, 0)
-    readingFromFile("input" ,task3 )
-    fixedEngine(0, task3 )
-    println(task3.sum)
-  }
+  
 
 
 
